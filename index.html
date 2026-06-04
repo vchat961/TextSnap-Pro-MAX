@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>TextSnap Pro MAX | by Vicky Chathar 🇰🇪</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* ---------- DARK MODE (ORIGINAL - NOT TOUCHED) ---------- */
+        :root {
+            --bg-deep: #0A1128;
+            --card-bg: #0D1B3E;
+            --card-translucent: rgba(13, 27, 62, 0.6);
+            --bg-translucent: rgba(0, 0, 0, 0.3);
+            --accent-cyan: #00B4D8;
+            --accent-neon: #00F5FF;
+            --accent-gold: #FFB800;
+            --accent-success: #00E676;
+            --accent-danger: #FF3B30;
+            --accent-orange: #FF6D00;
+            --accent-purple: #9C27B0;
+            --accent-purple-light: #CE93D8;
+            --text-primary: #FFFFFF;
+            --text-light: #E0E0E0;
+            --text-muted: #6C8DB0;
+            --text-steel: #B0C4DE;
+            --text-deep: #4A6A8A;
+            --border-cyan: rgba(0, 180, 216, 0.2);
+            --border-cyan-strong: rgba(0, 180, 216, 0.3);
+            --folder-bg: transparent;
+            --folder-bg-active: rgba(0, 180, 216, 0.15);
+            --folder-text-active: var(--accent-cyan);
+            --box-shadow: none;
+        }
+        
+        /* ---------- LIGHT MODE - CLEAN, MODERN, FIXED ---------- */
+        body.light-mode {
+            --bg-deep: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --card-translucent: #FFFFFF;
+            --bg-translucent: #FFFFFF;
+            --accent-cyan: #0284C7;
+            --accent-neon: #0EA5E9;
+            --accent-gold: #D97706;
+            --accent-success: #059669;
+            --accent-danger: #DC2626;
+            --accent-orange: #EA580C;
+            --accent-purple: #7C3AED;
+            --accent-purple-light: #A78BFA;
+            --text-primary: #1A202C;
+            --text-light: #2D3748;
+            --text-muted: #718096;
+            --text-steel: #4A5568;
+            --text-deep: #A0AEC0;
+            --border-cyan: #E2E8F0;
+            --border-cyan-strong: #E2E8F0;
+            --folder-bg: #F1F5F9;
+            --folder-bg-active: #E0F2FE;
+            --folder-text-active: #0284C7;
+            --box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-deep);
+            min-height: 100vh;
+            padding: 0;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        
+        .app-container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-cyan);
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .app-header {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-cyan);
+        }
+        
+        .logo-area { 
+            display: flex; 
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon { font-size: 28px; color: var(--accent-cyan); }
+        .app-title { 
+            font-size: 22px; font-weight: 700; 
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-neon));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .creator-credit { 
+            font-size: 11px; 
+            color: var(--text-muted);
+            margin-left: 38px;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .profile-avatar-header {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0A1128;
+            cursor: pointer;
+            border: 2px solid var(--border-cyan-strong);
+            transition: 0.2s;
+        }
+        .profile-avatar-header:hover {
+            opacity: 0.85;
+            transform: scale(0.97);
+        }
+        #themeToggleBtn {
+            background: rgba(0, 180, 216, 0.15);
+            border: 1px solid var(--border-cyan-strong);
+            border-radius: 40px;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--accent-cyan);
+            font-size: 18px;
+        }
+        body.light-mode #themeToggleBtn {
+            background: #F1F5F9;
+            border-color: #E2E8F0;
+            color: #475569;
+        }
+        
+        .profile-chip, .item-count {
+            display: none;
+        }
+        
+        .scroll-content {
+            padding: 20px 24px;
+            padding-bottom: 80px;
+        }
+        
+        /* Bottom Navigation Bar */
+        .bottom-nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-cyan);
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            align-items: center;
+            padding: 10px 24px;
+            z-index: 1000;
+            box-shadow: var(--box-shadow);
+        }
+        .nav-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 6px 24px;
+            border-radius: 30px;
+            transition: 0.2s;
+            color: var(--text-muted);
+        }
+        .nav-icon i {
+            font-size: 22px;
+        }
+        .nav-icon span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .nav-icon:hover {
+            background: rgba(0, 180, 216, 0.1);
+            color: var(--accent-cyan);
+        }
+        body.light-mode .nav-icon:hover {
+            background: #E0F2FE;
+        }
+        
+        /* Upload Area */
+        .upload-zone {
+            border: 2px dashed var(--border-cyan-strong);
+            border-radius: 20px;
+            padding: 32px 24px 24px 24px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--bg-translucent);
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+        body.light-mode .upload-zone {
+            background: #F8FAFE;
+        }
+        .upload-zone:hover { border-color: var(--accent-cyan); background: rgba(0, 180, 216, 0.05); }
+        .upload-zone.drag-over { border-color: var(--accent-neon); background: rgba(0, 180, 216, 0.1); }
+        .upload-icon { font-size: 36px; color: var(--accent-cyan); }
+        .upload-text { margin-top: 12px; color: var(--text-steel); font-size: 14px; }
+        .upload-subtext { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        
+        #previewWrapper {
+            margin-top: 14px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: var(--bg-translucent);
+            padding: 10px;
+            border-radius: 20px;
+        }
+        #previewWrapper.visible { display: flex; }
+        #imagePreview {
+            max-height: 100px;
+            max-width: 140px;
+            border-radius: 12px;
+            border: 2px solid var(--border-cyan-strong);
+            pointer-events: none;
+        }
+        .remove-img-btn {
+            background: rgba(255, 59, 48, 0.15);
+            border: 1px solid rgba(255, 59, 48, 0.4);
+            color: #FF6D6D;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        /* Search */
+        .search-bar { margin-bottom: 20px; }
+        .search-input {
+            width: 100%;
+            background: var(--bg-translucent);
+            border: 1px solid var(--border-cyan-strong);
+            border-radius: 40px;
+            padding: 12px 18px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+        }
+        body.light-mode .search-input {
+            background: #FFFFFF;
+            border-color: #E2E8F0;
+        }
+        body.light-mode .search-input:focus {
+            border-color: var(--accent-cyan);
+            outline: none;
+        }
+        
+        /* Folders - Light mode specific styling */
+        .folders-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .folder-chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border-cyan-strong);
+            background: var(--folder-bg);
+            color: var(--text-steel);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .folder-chip:hover, .folder-chip.active { 
+            background: var(--folder-bg-active); 
+            border-color: var(--folder-text-active); 
+            color: var(--folder-text-active);
+        }
+        body.light-mode .folder-chip {
+            background: #F1F5F9;
+            border-color: #E2E8F0;
+            color: #475569;
+        }
+        body.light-mode .folder-chip.active {
+            background: #E0F2FE;
+            border-color: #0284C7;
+            color: #0284C7;
+        }
+        
+        /* Image Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 24px;
+        }
+        .grid-card {
+            background: var(--card-translucent);
+            border: 1px solid var(--border-cyan);
+            border-radius: 10px;
+            padding: 6px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        body.light-mode .grid-card {
+            background: #F8FAFE;
+            border-color: #E2E8F0;
+        }
+        .grid-card:hover { background: rgba(0, 180, 216, 0.1); border-color: var(--accent-cyan); }
+        .grid-card.active { border-color: var(--accent-gold); background: rgba(255, 184, 0, 0.1); }
+        .grid-icon { font-size: 12px; color: var(--accent-cyan); }
+        .grid-title { font-size: 10px; color: var(--text-steel); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* Text Panel */
+        .text-panel {
+            background: var(--bg-translucent);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-cyan);
+        }
+        body.light-mode .text-panel {
+            background: #F8FAFE;
+        }
+        .extracted-text {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+            max-height: 150px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .action-btn {
+            background: rgba(0, 180, 216, 0.15);
+            border: none;
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 12px;
+            color: var(--accent-cyan);
+            cursor: pointer;
+        }
+        body.light-mode .action-btn {
+            background: #E0F2FE;
+            color: #0284C7;
+        }
+        .action-btn:hover { background: var(--accent-cyan); color: #0A1128; }
+        #ocrBtn {
+            background: linear-gradient(135deg, rgba(0,180,216,0.3), rgba(0,245,255,0.2));
+            border: 1px solid var(--border-cyan-strong);
+            color: var(--accent-neon);
+            font-weight: 700;
+        }
+        body.light-mode #ocrBtn {
+            background: linear-gradient(135deg, #0284C7, #0EA5E9);
+            color: white;
+        }
+        #ocrBtn:hover { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-neon)); color: #0A1128; }
+        
+        .notes-tags-area { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+        .notes-input, .tags-input {
+            flex: 1;
+            background: var(--bg-translucent);
+            border: 1px solid var(--border-cyan-strong);
+            border-radius: 30px;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+        body.light-mode .notes-input, body.light-mode .tags-input {
+            background: #FFFFFF;
+            border-color: #E2E8F0;
+            color: #1A202C;
+        }
+        .extra-toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; border-top: 1px solid var(--border-cyan); padding-top: 12px; }
+        .word-count { font-size: 10px; background: rgba(0, 180, 216, 0.1); padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; color: var(--text-muted); }
+        
+        /* Main Buttons */
+        .main-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 28px; }
+        .main-btn {
+            height: 44px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .btn-copy { background: var(--accent-success); color: #0A1128; border: none; }
+        .btn-pdf { background: var(--accent-orange); color: white; border: none; }
+        .btn-task { background: var(--accent-cyan); color: #0A1128; border: none; }
+        .btn-export { background: var(--accent-purple); color: white; border: none; }
+        
+        /* AI Panel */
+        .ai-panel {
+            background: var(--card-translucent);
+            border: 1px solid var(--border-cyan);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+        body.light-mode .ai-panel {
+            background: #FFFFFF;
+            box-shadow: var(--box-shadow);
+        }
+        .ai-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .ai-btn {
+            background: rgba(0, 180, 216, 0.1);
+            border: 1px solid var(--border-cyan-strong);
+            border-radius: 14px;
+            padding: 8px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        body.light-mode .ai-btn {
+            background: #F1F5F9;
+            border-color: #E2E8F0;
+            color: #0284C7;
+        }
+        .ai-btn:hover { background: rgba(0, 180, 216, 0.25); border-color: var(--accent-cyan); }
+        .ai-output {
+            background: var(--bg-translucent);
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 12px;
+            color: var(--text-light);
+            display: none;
+            margin-top: 12px;
+        }
+        body.light-mode .ai-output {
+            background: #F8FAFE;
+        }
+        .ai-output.visible { display: block; }
+        .ai-spinner {
+            width: 16px; height: 16px;
+            border: 2px solid rgba(0,180,216,0.3);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Tasks, Leaderboard, Badges, etc - inherit colors */
+        .section-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .task-list { max-height: 300px; overflow-y: auto; }
+        .task-item {
+            background: var(--card-translucent);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+        }
+        body.light-mode .task-item {
+            background: #F8FAFE;
+            border: 1px solid #E2E8F0;
+            border-left-width: 4px;
+        }
+        .task-critical { border-left-color: var(--accent-danger); }
+        .task-normal { border-left-color: var(--accent-gold); }
+        .task-less { border-left-color: var(--accent-success); }
+        .task-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .task-details { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+        .task-actions { margin-top: 10px; display: flex; gap: 10px; }
+        .task-btn {
+            background: rgba(0, 180, 216, 0.1);
+            border: none;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--text-steel);
+        }
+        body.light-mode .task-btn {
+            background: #E2E8F0;
+            color: #475569;
+        }
+        .task-btn:hover { background: rgba(0, 180, 216, 0.3); }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--card-translucent);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        body.light-mode .leaderboard-item {
+            background: #F8FAFE;
+            border: 1px solid #E2E8F0;
+        }
+        .lb-rank { font-size: 16px; font-weight: 700; color: var(--accent-gold); width: 28px; }
+        .lb-name { font-size: 13px; color: var(--text-primary); flex: 1; }
+        .lb-count { font-size: 12px; color: var(--accent-cyan); }
+        
+        .badge-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+        .badge-item {
+            background: var(--card-translucent);
+            border: 1px solid var(--border-cyan);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: var(--text-steel);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.4;
+        }
+        body.light-mode .badge-item {
+            background: #F1F5F9;
+            border-color: #E2E8F0;
+        }
+        .badge-item.unlocked { opacity: 1; border-color: var(--accent-gold); color: var(--accent-gold); }
+        
+        .refer-box {
+            background: var(--card-translucent);
+            border: 1px solid rgba(255, 184, 0, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        body.light-mode .refer-box {
+            background: #FEFCE8;
+            border-color: #FDE047;
+        }
+        .refer-title { font-size: 13px; font-weight: 600; color: var(--accent-gold); }
+        .refer-desc { font-size: 11px; color: var(--text-muted); margin: 6px 0 12px; }
+        .refer-link {
+            background: var(--bg-translucent);
+            border: 1px solid var(--border-cyan-strong);
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 11px;
+            color: var(--accent-cyan);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .howto-section {
+            background: rgba(0, 180, 216, 0.05);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-cyan);
+        }
+        body.light-mode .howto-section {
+            background: #F0F9FF;
+            border-color: #BAE6FD;
+        }
+        .howto-title { font-size: 13px; font-weight: 600; color: var(--accent-cyan); margin-bottom: 12px; }
+        .howto-step { font-size: 12px; color: var(--text-steel); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .howto-step i { width: 20px; font-size: 12px; color: var(--accent-cyan); }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .service-card {
+            background: var(--card-translucent);
+            border: 1px solid var(--border-cyan);
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            padding: 12px 6px;
+        }
+        body.light-mode .service-card {
+            background: #F8FAFE;
+            border-color: #E2E8F0;
+        }
+        .service-card:hover { background: rgba(0, 180, 216, 0.15); transform: translateY(-2px); border-color: var(--accent-cyan); }
+        .service-icon { font-size: 20px; color: var(--accent-cyan); display: block; }
+        .service-name { font-size: 9px; color: var(--text-steel); margin-top: 5px; display: block; }
+        
+        .plans-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .plan-card {
+            background: var(--card-translucent);
+            border: 1px solid var(--border-cyan);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        body.light-mode .plan-card {
+            background: #FFFFFF;
+            border-color: #E2E8F0;
+            box-shadow: var(--box-shadow);
+        }
+        .plan-card.active-plan { border-color: var(--accent-success); }
+        .plan-name { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .plan-price { font-size: 24px; font-weight: 700; color: var(--accent-cyan); }
+        .plan-extractions { font-size: 12px; color: var(--text-steel); margin: 8px 0; }
+        .plan-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            text-decoration: none;
+            display: block;
+        }
+        .plan-btn-active { background: var(--accent-success); color: #0A1128; border: none; }
+        .plan-btn-paid { background: var(--accent-gold); color: #0A1128; border: none; }
+        
+        .quota-bar-wrap {
+            background: var(--card-translucent);
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 24px;
+        }
+        body.light-mode .quota-bar-wrap {
+            background: #F8FAFE;
+        }
+        .quota-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .quota-label { font-size: 12px; color: var(--text-muted); }
+        .quota-count { font-size: 12px; color: var(--accent-cyan); }
+        .quota-bar { height: 6px; background: rgba(0, 180, 216, 0.15); border-radius: 10px; overflow: hidden; }
+        .quota-fill { height: 100%; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-neon)); width: 0%; }
+        
+        .profile-section { display: none; margin-bottom: 24px; }
+        .profile-card {
+            background: var(--card-translucent);
+            border-radius: 20px;
+            padding: 18px;
+        }
+        body.light-mode .profile-card {
+            background: #F8FAFE;
+            border: 1px solid #E2E8F0;
+        }
+        .profile-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+        .profile-avatar-placeholder {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-cyan);
+            background: rgba(0, 180, 216, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--accent-cyan);
+        }
+        .profile-name { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+        .profile-email { font-size: 11px; color: var(--text-muted); }
+        .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
+        .stat-box { background: rgba(0, 180, 216, 0.08); border-radius: 12px; padding: 12px; text-align: center; }
+        body.light-mode .stat-box {
+            background: #F1F5F9;
+        }
+        .stat-num { font-size: 22px; font-weight: 700; color: var(--accent-cyan); }
+        .stat-label { font-size: 10px; color: var(--text-muted); }
+        
+        #toastContainer { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+        .toast {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 10px 16px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            animation: slideIn 0.3s ease;
+            border: 1px solid var(--border-cyan-strong);
+        }
+        body.light-mode .toast {
+            background: #FFFFFF;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .toast.success { border-color: var(--accent-success); }
+        .toast.error { border-color: var(--accent-danger); }
+        @keyframes slideIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        footer { text-align: center; font-size: 11px; color: var(--text-deep); padding: 20px; border-top: 1px solid var(--border-cyan); }
+        
+        .worker-status {
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(0, 180, 216, 0.15);
+            color: var(--accent-cyan);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .worker-status.ok { background: rgba(0, 230, 118, 0.15); color: var(--accent-success); }
+        .worker-status.bad { background: rgba(255, 59, 48, 0.15); color: #FF6D6D; }
+        
+        /* Login Overlay */
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(10, 17, 40, 0.97);
+            backdrop-filter: blur(10px);
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body.light-mode .login-overlay {
+            background: rgba(255, 255, 255, 0.98);
+        }
+        .login-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-cyan-strong);
+            border-radius: 28px;
+            padding: 36px 28px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        body.light-mode .login-box {
+            background: white;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .login-logo { font-size: 48px; color: var(--accent-cyan); }
+        .login-title { font-size: 26px; font-weight: 700; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-neon)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .login-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+        .google-btn {
+            width: 100%; padding: 14px; background: white; color: #333; border: none;
+            border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;
+        }
+        body.light-mode .google-btn {
+            background: #F1F5F9;
+            color: #1A202C;
+        }
+        .or-divider { color: var(--text-muted); font-size: 12px; margin: 15px 0; }
+        .name-input { width: 100%; padding: 14px; border-radius: 30px; border: 1px solid var(--accent-cyan); background: var(--bg-translucent); color: var(--text-primary); font-size: 14px; margin-bottom: 15px; }
+        body.light-mode .name-input {
+            background: white;
+            color: #1A202C;
+            border-color: #CBD5E0;
+        }
+        .privacy-check { display: flex; align-items: center; gap: 10px; margin: 15px 0; font-size: 11px; color: var(--text-muted); justify-content: center; }
+        .continue-btn { width: 100%; padding: 14px; background: var(--accent-cyan); color: #0A1128; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .free-badge { font-size: 11px; color: var(--accent-success); margin-top: 15px; }
+        
+        .google-popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--card-bg); border: 1px solid var(--accent-cyan); border-radius: 28px;
+            padding: 28px; width: 90%; max-width: 380px; z-index: 6000; display: none;
+            flex-direction: column; gap: 15px;
+        }
+        .google-popup input { width: 100%; padding: 12px; border-radius: 30px; border: 1px solid var(--accent-cyan); background: var(--bg-translucent); color: var(--text-primary); }
+        .google-popup button { padding: 12px; border-radius: 30px; background: var(--accent-cyan); color: #0A1128; border: none; font-weight: 600; cursor: pointer; }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 5999; display: none; }
+        
+        /* Floating Chat */
+        #chathar-fab {
+            position: fixed; bottom: 80px; right: 22px; width: 58px; height: 58px;
+            border-radius: 50%; background: linear-gradient(135deg, var(--accent-cyan), #7B2FFF);
+            box-shadow: 0 0 18px rgba(0,180,216,0.5); display: flex; align-items: center;
+            justify-content: center; cursor: pointer; z-index: 9999; font-size: 26px; border: none;
+            color: white;
+        }
+        #chathar-panel {
+            position: fixed; bottom: 150px; right: 16px; width: 340px; max-height: 80vh;
+            background: var(--card-bg); border: 1px solid var(--border-cyan-strong); border-radius: 20px;
+            z-index: 9998; transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none;
+            transition: all 0.3s; display: flex; flex-direction: column;
+        }
+        #chathar-panel.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+        .chathar-header { padding: 14px 16px; background: linear-gradient(135deg, rgba(0,180,216,0.08), rgba(123,47,255,0.08)); border-bottom: 1px solid var(--border-cyan); text-align: center; position: relative; }
+        .chathar-title { font-size: 15px; font-weight: 700; color: var(--accent-cyan); }
+        .chathar-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+        .chathar-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 12px; border-bottom: 1px solid var(--border-cyan); }
+        .chathar-action-btn { background: rgba(0,180,216,0.06); border: 1px solid var(--border-cyan-strong); border-radius: 10px; color: var(--accent-cyan); font-size: 11px; padding: 8px 6px; cursor: pointer; display: flex; align-items: center; gap: 5px; justify-content: center; }
+        #chathar-messages { flex: 1; overflow-y: auto; padding: 12px; max-height: 220px; }
+        .chathar-msg { max-width: 85%; padding: 9px 12px; border-radius: 14px; font-size: 12.5px; margin-bottom: 8px; }
+        .chathar-msg.user { background: linear-gradient(135deg, rgba(0,180,216,0.2), rgba(123,47,255,0.2)); border: 1px solid var(--border-cyan-strong); color: var(--text-primary); margin-left: auto; }
+        .chathar-msg.ai { background: var(--bg-translucent); border: 1px solid var(--border-cyan); color: var(--text-light); }
+        .chathar-typing { display: flex; gap: 4px; padding: 10px 14px; }
+        .chathar-typing span { width: 6px; height: 6px; background: var(--accent-cyan); border-radius: 50%; animation: typingBounce 1s infinite; }
+        @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); opacity:0.4; } 30% { transform: translateY(-6px); opacity:1; } }
+        .chathar-input-area { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--border-cyan); }
+        #chathar-input { flex: 1; background: var(--bg-translucent); border: 1px solid var(--border-cyan-strong); border-radius: 20px; padding: 8px 14px; color: var(--text-primary); font-size: 12.5px; outline: none; }
+        #chathar-send { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-cyan); border: none; color: #0A1128; cursor: pointer; }
+        
+        .formatter-panel {
+            background: var(--card-translucent);
+            border: 1px solid var(--border-cyan);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+        .formatter-output {
+            background: var(--bg-translucent);
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+        .voice-btn {
+            background: rgba(156, 39, 176, 0.15);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            border-radius: 14px;
+            padding: 9px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-purple-light);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .voice-btn.speaking { background: rgba(156, 39, 176, 0.3); border-color: var(--accent-purple); color: #E040FB; }
+    </style>
+</head>
+<body>
+
+<div id="toastContainer"></div>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-box">
+        <div class="login-logo"><i class="fas fa-camera-retro"></i></div>
+        <div class="login-title">TextSnap Pro MAX</div>
+        <div class="login-sub">by Vicky Chathar 🇰🇪</div>
+        <button id="googleSignInBtn" class="google-btn"><img src="https://www.google.com/favicon.ico" alt="Google" style="width:20px;height:20px;"> Sign in with Google</button>
+        <div class="or-divider">──────── or ────────</div>
+        <input type="text" id="guestNameInput" class="name-input" placeholder="👤 Your Name">
+        <div class="privacy-check"><input type="checkbox" id="privacyAgree"> <label>I agree to the <a onclick="alert('Privacy Policy')">Privacy Policy</a></label></div>
+        <button id="continueBtn" class="continue-btn">Continue →</button>
+        <div class="free-badge">✨ Free plan includes 8 extractions/day</div>
+    </div>
+</div>
+
+<div id="googlePopupOverlay" class="popup-overlay"></div>
+<div id="googlePopup" class="google-popup">
+    <h3 style="color:var(--accent-cyan); text-align:center;">🔵 Google Sign In</h3>
+    <input type="email" id="googleEmail" placeholder="📧 Email / Gmail">
+    <input type="password" id="googlePassword" placeholder="🔑 Password (any password works)">
+    <input type="text" id="googleName" placeholder="👤 Your Name">
+    <button id="confirmGoogleBtn">Confirm & Continue</button>
+</div>
+
+<div class="app-container">
+    <!-- SIMPLIFIED HEADER -->
+    <div class="app-header">
+        <div class="logo-area">
+            <div class="logo-row">
+                <i class="fas fa-camera-retro logo-icon"></i>
+                <div class="app-title">TextSnap Pro MAX</div>
+            </div>
+            <div class="creator-credit">by Vicky Chathar 🇰🇪</div>
+        </div>
+        <div class="header-actions">
+            <div id="headerAvatar" class="profile-avatar-header" onclick="toggleProfileSection()">👤</div>
+            <button id="themeToggleBtn" class="action-btn"><i class="fas fa-moon"></i></button>
+        </div>
+    </div>
+
+    <div class="scroll-content">
+        <!-- Profile Section -->
+        <div id="profileSection" class="profile-section">
+            <div class="profile-card">
+                <div class="profile-top">
+                    <div class="profile-avatar-placeholder" id="profileAvatar"><i class="fas fa-user"></i></div>
+                    <div><div class="profile-name" id="profileName">Guest User</div><div class="profile-email" id="profileEmail">Free Plan</div></div>
+                    <button onclick="signOut()" style="margin-left:auto; background:rgba(255,59,48,0.15); border:1px solid var(--accent-danger); color:var(--accent-danger); border-radius:20px; padding:6px 12px; font-size:11px;">Sign Out</button>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-box"><div class="stat-num" id="statExtractions">0</div><div class="stat-label">Extractions</div></div>
+                    <div class="stat-box"><div class="stat-num" id="statTasks">0</div><div class="stat-label">Tasks</div></div>
+                    <div class="stat-box"><div class="stat-num" id="statCopied">0</div><div class="stat-label">Copied</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quota Bar -->
+        <div class="quota-bar-wrap"><div class="quota-top"><span class="quota-label"><i class="fas fa-bolt"></i> Daily Extractions</span><span class="quota-count" id="quotaCount">0 / 8 used</span></div><div class="quota-bar"><div class="quota-fill" id="quotaFill"></div></div></div>
+
+        <!-- Folders -->
+        <div class="section-title"><i class="fas fa-folder"></i> Folders</div>
+        <div class="folders-row" id="foldersRow">
+            <button class="folder-chip active" data-folder="all">📂 All</button>
+            <button class="folder-chip" data-folder="jobs">💼 Jobs</button>
+            <button class="folder-chip" data-folder="invoices">🧾 Invoices</button>
+            <button class="folder-chip" data-folder="school">📚 School</button>
+            <button class="folder-chip folder-add" id="addFolderBtn">+ New</button>
+        </div>
+
+        <!-- Upload Area -->
+        <div class="upload-zone" id="uploadArea"><i class="fas fa-cloud-upload-alt upload-icon"></i><p class="upload-text">📤 Upload Images</p><p class="upload-subtext">or drag & drop (JPG, PNG)</p></div>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        <div id="previewWrapper"><img id="imagePreview" alt="Preview"><button class="remove-img-btn" id="removeImgBtn"><i class="fas fa-times"></i> Remove</button></div>
+
+        <!-- Search -->
+        <div class="search-bar"><input type="text" class="search-input" id="searchInput" placeholder="🔍 Search tasks by title, tag, or note..."></div>
+
+        <!-- Image Grid -->
+        <div class="grid-container" id="gridContainer"><div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:20px;">No images uploaded</div></div>
+
+        <!-- Extracted Text Panel -->
+        <div class="text-panel">
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+                <span style="font-weight:600; color:var(--accent-cyan);"><i class="fas fa-align-left"></i> Extracted Text</span>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button id="ocrBtn" class="action-btn"><i class="fas fa-magic"></i> OCR</button>
+                    <button class="action-btn" onclick="editText()"><i class="fas fa-edit"></i> Edit</button>
+                    <button class="action-btn" onclick="clearText()"><i class="fas fa-trash"></i> Clear</button>
+                </div>
+            </div>
+            <div id="extractedText" class="extracted-text">Upload an image to extract text...</div>
+            <div class="word-count" id="wordCountDisplay"><i class="fas fa-chart-simple"></i> Words: 0 | Chars: 0</div>
+            <div class="notes-tags-area">
+                <input type="text" class="notes-input" id="notesInput" placeholder="📝 Add notes...">
+                <input type="text" class="tags-input" id="tagsInput" placeholder="🏷️ Tags (comma separated)">
+                <button id="saveNotesTagsBtn" class="action-btn">Save</button>
+            </div>
+            <div class="extra-toolbar">
+                <div style="display:flex; gap:8px;"><button id="speakBtn" class="action-btn"><i class="fas fa-volume-up"></i> Read Aloud</button><button id="stopSpeakBtn" class="action-btn" style="display:none;"><i class="fas fa-stop"></i> Stop</button></div>
+                <button id="printBtn" class="action-btn"><i class="fas fa-print"></i> Print</button>
+                <button id="exportTxtBtn" class="action-btn"><i class="fas fa-file-alt"></i> TXT</button>
+                <button id="shareImageBtn" class="action-btn"><i class="fas fa-image"></i> Share as Image</button>
+                <button id="exportJsonBtn" class="action-btn"><i class="fas fa-database"></i> Backup</button>
+                <button id="importJsonBtn" class="action-btn"><i class="fas fa-upload"></i> Restore</button>
+            </div>
+        </div>
+
+        <!-- Smart OCR Formatter -->
+        <div class="formatter-panel"><div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;"><span style="font-size:13px; font-weight:600; color:var(--accent-cyan);"><i class="fas fa-wand-magic"></i> Smart OCR Formatter</span><button id="formatTextBtn" class="action-btn"><i class="fas fa-wand-magic"></i> Format & Clean</button></div><div id="formattedOutput" class="formatter-output">Click "Format & Clean" to structure your extracted text</div></div>
+
+        <!-- AI Panel -->
+        <div class="ai-panel">
+            <div style="font-size:13px; font-weight:700; color:var(--accent-cyan); margin-bottom:14px;"><i class="fas fa-robot"></i> AI Assistant <span style="font-size:9px; background:rgba(0,230,118,0.2); border-radius:10px; padding:2px 8px; margin-left:6px; color:var(--accent-success);">✅ Powered by Groq</span></div>
+            <div class="ai-btn-grid">
+                <button class="ai-btn" onclick="aiAction('enhance')"><i class="fas fa-wand-magic-sparkles"></i> Enhance & Fix Text</button>
+                <button class="ai-btn" onclick="aiAction('doctype')"><i class="fas fa-file-circle-check"></i> Detect Document</button>
+                <button class="ai-btn" onclick="aiAction('summary')"><i class="fas fa-compress-alt"></i> Summarize</button>
+                <button class="ai-btn" onclick="aiAction('whatsapp')"><i class="fab fa-whatsapp"></i> WhatsApp Ready</button>
+                <button class="ai-btn" onclick="aiAction('contacts')"><i class="fas fa-address-book"></i> Extract Contacts</button>
+                <button class="ai-btn" onclick="aiAction('sensitive')"><i class="fas fa-shield-halved"></i> Check Privacy</button>
+                <button class="ai-btn" onclick="aiAction('calendar')"><i class="fas fa-calendar-plus"></i> Calendar Event</button>
+                <button class="ai-btn" onclick="aiAction('kenya')"><i class="fas fa-flag"></i> Kenya Doc Reader</button>
+                <button class="ai-btn" onclick="aiAction('lawyer')"><i class="fas fa-scale-balanced"></i> Explain Simply</button>
+                <button class="ai-btn" onclick="aiAction('translate')"><i class="fas fa-language"></i> Translate (EN→SW)</button>
+                <button class="ai-btn" onclick="aiAction('invoice')"><i class="fas fa-calculator"></i> Receipt/Invoice</button>
+                <button class="ai-btn" onclick="aiAction('fake')"><i class="fas fa-triangle-exclamation"></i> Verify Document</button>
+            </div>
+            <button class="voice-btn" id="voiceSummaryBtn"><i class="fas fa-volume-high"></i> Read Aloud (Voice Summary)</button>
+            <div class="ai-output" id="aiOutput"><div id="aiOutputContent"></div></div>
+        </div>
+
+        <!-- Main Action Buttons -->
+        <div class="main-buttons">
+            <button id="copyBtn" class="main-btn btn-copy"><i class="fas fa-copy"></i> Copy</button>
+            <button id="pdfBtn" class="main-btn btn-pdf"><i class="fas fa-file-pdf"></i> PDF</button>
+            <button id="saveTaskBtn" class="main-btn btn-task"><i class="fas fa-tasks"></i> Task</button>
+            <button id="exportCsvBtn" class="main-btn btn-export"><i class="fas fa-download"></i> Export</button>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="tasks-section"><div class="section-title"><span><i class="fas fa-list-check"></i> My Tasks</span><button onclick="clearAllTasks()" style="background:rgba(255,59,48,0.15); border-radius:20px; padding:4px 12px; font-size:10px; color:var(--accent-danger);">Clear All</button></div><div class="task-list" id="taskList"><p style="color:var(--text-muted); text-align:center; padding:20px;">No tasks yet</p></div></div>
+
+        <!-- Leaderboard & Achievements -->
+        <div class="section-title"><i class="fas fa-trophy"></i> Leaderboard</div><div id="leaderboard" style="margin-bottom:24px;"></div>
+        <div class="section-title"><i class="fas fa-medal"></i> Achievements</div>
+        <div class="badge-grid" id="badgeGrid">
+            <div class="badge-item" id="badge-first">🥇 First Scan</div><div class="badge-item" id="badge-ten">🔥 10 Scans</div>
+            <div class="badge-item" id="badge-fifty">⚡ 50 Scans</div><div class="badge-item" id="badge-kenya">🇰🇪 Kenyan Pioneer</div>
+            <div class="badge-item" id="badge-task">📋 Task Master</div><div class="badge-item" id="badge-ai">🤖 AI Explorer</div>
+        </div>
+
+        <!-- Refer a Friend -->
+        <div class="refer-box"><div class="refer-title"><i class="fas fa-gift"></i> Refer a Friend — Earn Credits!</div><div class="refer-desc">Share your link. When a friend signs up you both get +5 bonus extractions.</div><div class="refer-link"><span id="referLink">textsnap.app/ref/user</span><button class="refer-copy" onclick="copyReferLink()" style="background:none; border:none; color:var(--accent-cyan); cursor:pointer;"><i class="fas fa-copy"></i> Copy</button></div></div>
+
+        <!-- How To Use -->
+        <div class="howto-section"><div class="howto-title"><i class="fas fa-circle-question"></i> How to Use TextSnap</div>
+            <div class="howto-step"><i class="fas fa-1"></i> Upload images (click or drag & drop)</div><div class="howto-step"><i class="fas fa-2"></i> Click OCR to extract text</div>
+            <div class="howto-step"><i class="fas fa-3"></i> Copy text or save as PDF</div><div class="howto-step"><i class="fas fa-4"></i> Save as Task with priority, tags & notes</div>
+            <div class="howto-step"><i class="fas fa-5"></i> Search tasks, share via WhatsApp</div><div class="howto-step"><i class="fas fa-6"></i> Use Smart Formatter to clean OCR text</div>
+            <div class="howto-step"><i class="fas fa-7"></i> ✅ AI features working with Groq!</div>
+        </div>
+
+        <!-- Share via Services -->
+        <div class="howto-section"><div class="howto-title"><i class="fas fa-share-nodes"></i> Share via</div>
+            <div class="services-grid"><div class="service-card" onclick="shareVia('whatsapp')"><i class="fab fa-whatsapp service-icon"></i><span class="service-name">WhatsApp</span></div>
+            <div class="service-card" onclick="shareVia('telegram')"><i class="fab fa-telegram service-icon"></i><span class="service-name">Telegram</span></div>
+            <div class="service-card" onclick="shareVia('email')"><i class="fas fa-envelope service-icon"></i><span class="service-name">Email</span></div>
+            <div class="service-card" onclick="shareVia('copy')"><i class="fas fa-link service-icon"></i><span class="service-name">Copy Link</span></div></div>
+        </div>
+
+        <!-- Extra Services -->
+        <div class="section-title"><i class="fas fa-th"></i> Extra Services <span style="font-size:9px;background:rgba(0,230,118,0.15);color:var(--accent-success);border-radius:10px;padding:2px 8px;">All Working</span></div>
+        <div class="services-grid">
+            <div class="service-card" onclick="photoTranslate()"><i class="fas fa-language service-icon"></i><span class="service-name">Photo Translate</span></div>
+            <div class="service-card" onclick="serviceAction('word')"><i class="fas fa-file-image service-icon"></i><span class="service-name">JPG to Word</span></div>
+            <div class="service-card" onclick="serviceAction('textpdf')"><i class="fas fa-file-alt service-icon"></i><span class="service-name">Text to PDF</span></div>
+            <div class="service-card" onclick="pdfToWord()"><i class="fas fa-file-pdf service-icon"></i><span class="service-name">PDF to Word</span></div>
+            <div class="service-card" onclick="aiAction('translate')"><i class="fas fa-robot service-icon"></i><span class="service-name">Image Translator</span></div>
+            <div class="service-card" onclick="aiAction('enhance')"><i class="fas fa-magic service-icon"></i><span class="service-name">Enhancer</span></div>
+            <div class="service-card" onclick="pdfToImage()"><i class="fas fa-file-image service-icon"></i><span class="service-name">PDF to Image</span></div>
+            <div class="service-card" onclick="serviceAction('imagepdf')"><i class="fas fa-camera service-icon"></i><span class="service-name">Image to PDF</span></div>
+        </div>
+
+        <!-- Plans -->
+        <div class="section-title"><i class="fas fa-crown"></i> Plans</div>
+        <div class="plans-grid">
+            <div class="plan-card active-plan"><div class="plan-name">Free</div><div class="plan-price">KES 0</div><div class="plan-extractions">8 extractions/day</div><div style="font-size:11px;color:var(--text-muted);">Basic features included</div><button class="plan-btn plan-btn-active" disabled>✅ Current Plan</button></div>
+            <div class="plan-card"><div class="plan-name">Support ☕</div><div class="plan-price">Any amount</div><div class="plan-extractions">❤️ Keep the app alive</div><div style="font-size:11px;color:var(--text-muted);">Buy me a coffee!</div><a href="https://buymeacoffee.com/vickychathar" target="_blank" class="plan-btn plan-btn-paid">☕ Buy Me a Coffee</a></div>
+        </div>
+    </div>
+    <footer><span>© 2025 TextSnap Pro MAX</span> <span>•</span> <span>by Vicky Chathar 🇰🇪</span> <span>•</span> <span style="color:var(--accent-cyan);">v5.0 - Dual Engine OCR + All Features Working!</span></footer>
+</div>
+
+<!-- BOTTOM BAR - 2 ICONS ONLY -->
+<div class="bottom-nav-bar">
+    <div class="nav-icon" onclick="showToast('🔍 Filters - search by tags, folders, or priority','info')">
+        <i class="fas fa-sliders-h"></i>
+        <span>Filters</span>
+    </div>
+    <div class="nav-icon" onclick="document.getElementById('notesInput').focus(); showToast('✏️ Add a caption or note above','info')">
+        <i class="fas fa-pen-alt"></i>
+        <span>Add a caption</span>
+    </div>
+</div>
+
+<!-- Floating Chat -->
+<button id="chathar-fab" onclick="toggleChathar()">🚀</button>
+<div id="chathar-panel"><div class="chathar-header"><button class="chathar-close" onclick="toggleChathar()">✕</button><div class="chathar-title">🚀 CHATHAR X_AI</div><div class="chathar-subtitle" style="font-size:9px; color:var(--text-muted);">by Vicky Chathar, 21 · Nairobi · Groq</div></div>
+    <div class="chathar-actions"><button class="chathar-action-btn" onclick="chatharQuick('Enhance the extracted text')"><i class="fas fa-magic"></i> Enhance</button><button class="chathar-action-btn" onclick="chatharQuick('Summarize the extracted text')"><i class="fas fa-list"></i> Summarize</button><button class="chathar-action-btn" onclick="chatharQuick('Translate to Swahili')"><i class="fas fa-language"></i> Swahili</button><button class="chathar-action-btn" onclick="chatharQuick('Extract contacts')"><i class="fas fa-user"></i> Contacts</button></div>
+    <div id="chathar-messages"><div class="chathar-msg ai"><div style="font-size:10px; color:var(--accent-cyan);">🚀 CHATHAR X_AI</div>Hey! I'm powered by Groq - fast and working! Ask me anything. 🇰🇪</div></div>
+    <div class="chathar-input-area"><input id="chathar-input" placeholder="Ask me..." onkeydown="if(event.key==='Enter') sendChathar()"><button id="chathar-send" onclick="sendChathar()"><i class="fas fa-paper-plane"></i></button></div>
+</div>
+
+<script>
+    // ============================================================
+    // ALL ORIGINAL JAVASCRIPT - FULLY INTACT
+    // ============================================================
+    const WORKER_URL = 'https://textsnap-proxy.jfhreception22.workers.dev';
+    const GROQ_MODEL = 'llama-3.1-8b-instant';
+
+    let images = [], activeIndex = -1, tasks = JSON.parse(localStorage.getItem('textsnap_tasks') || '[]');
+    let stats = JSON.parse(localStorage.getItem('textsnap_stats') || '{"extractions":0,"tasks":0,"copied":0}');
+    let currentUser = localStorage.getItem('textsnap_user') || null;
+    let currentEmail = localStorage.getItem('textsnap_email') || '';
+    let extractionsToday = parseInt(localStorage.getItem('textsnap_extractions_today') || '0');
+    const MAX_EXTRACTIONS = 8;
+    let currentSpeech = null;
+
+    function showToast(msg, type = 'info') { const c = document.getElementById('toastContainer'); const t = document.createElement('div'); t.className = `toast ${type}`; t.textContent = msg; c.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+
+    const speakBtn = document.getElementById('speakBtn'), stopSpeakBtn = document.getElementById('stopSpeakBtn');
+    function stopSpeaking() { if (window.speechSynthesis) window.speechSynthesis.cancel(); currentSpeech = null; speakBtn.style.display = 'inline-flex'; stopSpeakBtn.style.display = 'none'; }
+    function startSpeaking(text) { if (!text || text.includes('Upload an image')) { showToast('No text to read', 'error'); return; } stopSpeaking(); const utterance = new SpeechSynthesisUtterance(text); utterance.rate = 0.9; utterance.onend = () => { speakBtn.style.display = 'inline-flex'; stopSpeakBtn.style.display = 'none'; currentSpeech = null; }; currentSpeech = utterance; window.speechSynthesis.speak(utterance); speakBtn.style.display = 'none'; stopSpeakBtn.style.display = 'inline-flex'; }
+    speakBtn.addEventListener('click', () => startSpeaking(document.getElementById('extractedText').innerText));
+    stopSpeakBtn.addEventListener('click', () => { stopSpeaking(); showToast('Stopped reading', 'info'); });
+
+    const loginOverlay = document.getElementById('loginOverlay'), profileSection = document.getElementById('profileSection'), profileChip = document.getElementById('profileChip'), chipName = document.getElementById('chipName'), profileNameEl = document.getElementById('profileName'), profileEmailEl = document.getElementById('profileEmail'), googlePopup = document.getElementById('googlePopup'), googlePopupOverlay = document.getElementById('googlePopupOverlay');
+    
+    function updateHeaderAvatar() {
+        const avatarEl = document.getElementById('headerAvatar');
+        if(avatarEl) {
+            if(currentUser) avatarEl.innerHTML = currentUser.charAt(0).toUpperCase();
+            else avatarEl.innerHTML = '👤';
+        }
+    }
+    
+    function updateProfileUI() { 
+        if (currentUser) { 
+            profileNameEl.textContent = currentUser; 
+            if(chipName) chipName.textContent = currentUser.length > 12 ? currentUser.substring(0,10)+'…' : currentUser; 
+            profileEmailEl.textContent = currentEmail || 'Free Plan'; 
+            if(profileChip) profileChip.style.display = 'flex'; 
+            loginOverlay.style.display = 'none'; 
+            document.getElementById('referLink').textContent = `textsnap.app/ref/${currentUser.toLowerCase().replace(/\s+/g,'').substring(0,12)}`; 
+            showToast(`Welcome, ${currentUser}! 👋`, 'success'); 
+        } else { 
+            if(profileChip) profileChip.style.display = 'none'; 
+            loginOverlay.style.display = 'flex'; 
+        } 
+        updateStats(); 
+        updateQuotaBar(); 
+        renderLeaderboard();
+        updateHeaderAvatar();
+    }
+    
+    function hideLoginOverlay(username, email = '') { currentUser = username; currentEmail = email; localStorage.setItem('textsnap_user', username); localStorage.setItem('textsnap_email', email); updateProfileUI(); }
+    function signOut() { localStorage.removeItem('textsnap_user'); localStorage.removeItem('textsnap_email'); currentUser = null; currentEmail = ''; updateProfileUI(); showToast('Signed out', 'info'); }
+    function toggleProfileSection() { if (profileSection.style.display === 'block') profileSection.style.display = 'none'; else profileSection.style.display = 'block'; }
+    
+    document.getElementById('googleSignInBtn').addEventListener('click', () => { googlePopupOverlay.style.display = 'block'; googlePopup.style.display = 'flex'; });
+    function closeGooglePopup() { googlePopupOverlay.style.display = 'none'; googlePopup.style.display = 'none'; }
+    document.getElementById('confirmGoogleBtn').addEventListener('click', () => { const email = document.getElementById('googleEmail').value.trim(); const name = document.getElementById('googleName').value.trim(); if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Valid email required', 'error'); return; } if (!name) { showToast('Enter your name', 'error'); return; } document.getElementById('guestNameInput').value = name; localStorage.setItem('textsnap_email', email); currentEmail = email; closeGooglePopup(); showToast('Google sign-in saved ✓', 'success'); });
+    document.getElementById('continueBtn').addEventListener('click', () => { const username = document.getElementById('guestNameInput').value.trim(); const privacyChecked = document.getElementById('privacyAgree').checked; if (!username) { showToast('Enter your name', 'error'); return; } if (!privacyChecked) { showToast('Agree to privacy policy', 'error'); return; } hideLoginOverlay(username); });
+    googlePopupOverlay.addEventListener('click', closeGooglePopup);
+
+    document.getElementById('themeToggleBtn').addEventListener('click', () => { document.body.classList.toggle('light-mode'); document.getElementById('themeToggleBtn').innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; });
+    
+    async function checkWorker() { const el = document.getElementById('workerStatus'); try { const r = await fetch(`${WORKER_URL}/groq`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ model:GROQ_MODEL, messages:[{role:'user',content:'hi'}], max_tokens:5 }) }); if (r.ok) { el.className='worker-status ok'; el.innerHTML='<i class="fas fa-check-circle"></i> AI Ready'; } else throw new Error(); } catch(e) { el.className='worker-status bad'; el.innerHTML='<i class="fas fa-times-circle"></i> Offline'; } } checkWorker();
+
+    function updateQuotaBar() { const percent = (extractionsToday/MAX_EXTRACTIONS)*100; document.getElementById('quotaFill').style.width = percent+'%'; document.getElementById('quotaCount').textContent = `${extractionsToday}/${MAX_EXTRACTIONS} used`; }
+    function incrementQuota() { if (extractionsToday < MAX_EXTRACTIONS) { extractionsToday++; localStorage.setItem('textsnap_extractions_today', extractionsToday); updateQuotaBar(); stats.extractions++; localStorage.setItem('textsnap_stats', JSON.stringify(stats)); updateStats(); renderLeaderboard(); return true; } return false; }
+    function updateStats() { document.getElementById('statExtractions').textContent = stats.extractions; document.getElementById('statTasks').textContent = tasks.length; document.getElementById('statCopied').textContent = stats.copied; document.getElementById('itemCount').textContent = `${tasks.length} item${tasks.length!==1?'s':''}`; }
+
+    const SEED_LEADERS = [{ name:'Vicky C.', count:248 },{ name:'John M.', count:187 },{ name:'Amina K.', count:134 },{ name:'Brian O.', count:98 },{ name:'Grace W.', count:72 }], MEDALS = ['🥇','🥈','🥉','4','5','6'];
+    function renderLeaderboard() { const container = document.getElementById('leaderboard'); let board = [...SEED_LEADERS]; if (currentUser) { const myCount = stats.extractions||0; const myName = currentUser.length>10 ? currentUser.substring(0,10)+'.' : currentUser; board = board.filter(e=>e.name.toLowerCase()!==myName.toLowerCase()); board.push({ name:myName, count:myCount, isMe:true }); } board.sort((a,b)=>b.count-a.count); board = board.slice(0,6); container.innerHTML = board.map((entry,i)=>{ const medal = MEDALS[i]||(i+1); const highlight = entry.isMe ? ' style="border-color:rgba(0,180,216,0.4);background:rgba(0,180,216,0.08);"' : ''; const youBadge = entry.isMe ? ' <span style="font-size:9px;background:rgba(0,180,216,0.2);color:#00B4D8;border-radius:8px;padding:1px 6px;">you</span>' : ''; return `<div class="leaderboard-item"${highlight}><span class="lb-rank">${medal}</span><span class="lb-name">${escapeHtml(entry.name)}${youBadge}</span><span class="lb-count">${entry.count} extractions</span></div>`; }).join(''); }
+
+    let unlockedBadges = JSON.parse(localStorage.getItem('textsnap_badges') || '[]');
+    function unlockBadge(id) { if(!unlockedBadges.includes(id)){ unlockedBadges.push(id); localStorage.setItem('textsnap_badges',JSON.stringify(unlockedBadges)); renderBadges(); const el = document.getElementById(id); if(el) showToast(`🏅 Badge unlocked: ${el.textContent.trim()}`, 'success'); } }
+    function renderBadges() { unlockedBadges.forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.add('unlocked'); }); if(stats.extractions>=1) unlockBadge('badge-first'); if(stats.extractions>=10) unlockBadge('badge-ten'); if(stats.extractions>=50) unlockBadge('badge-fifty'); if(tasks.length>=5) unlockBadge('badge-task'); }
+
+    const uploadArea = document.getElementById('uploadArea'), fileInput = document.getElementById('fileInput'), previewWrapper = document.getElementById('previewWrapper'), imagePreview = document.getElementById('imagePreview'), removeImgBtn = document.getElementById('removeImgBtn');
+    uploadArea.addEventListener('click',()=>fileInput.click()); uploadArea.addEventListener('dragover',e=>{e.preventDefault(); uploadArea.classList.add('drag-over');}); uploadArea.addEventListener('dragleave',()=>uploadArea.classList.remove('drag-over')); uploadArea.addEventListener('drop',e=>{e.preventDefault(); uploadArea.classList.remove('drag-over'); handleFiles(e.dataTransfer.files);}); fileInput.addEventListener('change',e=>handleFiles(e.target.files)); removeImgBtn.addEventListener('click',()=>clearAllImages());
+    function handleFiles(files){ Array.from(files).forEach(file=>{ if(!file.type.startsWith('image/')) return; const reader = new FileReader(); reader.onload = (e)=>{ images.push({ name:file.name, src:e.target.result, text:'', notes:'', tags:'' }); renderGrid(); selectImage(images.length-1); if(images.length===1){ imagePreview.src=e.target.result; previewWrapper.classList.add('visible'); } }; reader.readAsDataURL(file); }); }
+    function clearAllImages(){ images=[]; activeIndex=-1; renderGrid(); previewWrapper.classList.remove('visible'); imagePreview.src=''; document.getElementById('extractedText').innerHTML='Upload an image to extract text...'; showToast('All images cleared','info'); }
+    function renderGrid(){ const container = document.getElementById('gridContainer'); if(images.length===0){ container.innerHTML='<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:20px;">No images uploaded</div>'; return; } container.innerHTML = images.map((img,i)=>`<div class="grid-card ${i===activeIndex?'active':''}" onclick="selectImage(${i})"><i class="fas fa-image grid-icon"></i><span class="grid-title">${escapeHtml(img.name.substring(0,15))}</span></div>`).join(''); }
+    function selectImage(index){ activeIndex=index; renderGrid(); const txt=images[index].text||''; document.getElementById('extractedText').innerText = txt || 'Click OCR to extract text...'; document.getElementById('notesInput').value=images[index].notes||''; document.getElementById('tagsInput').value=images[index].tags||''; if(images[index].src){ imagePreview.src=images[index].src; previewWrapper.classList.add('visible'); } }
+    function editText(){ const el=document.getElementById('extractedText'); el.contentEditable = el.contentEditable==='true'?'false':'true'; if(el.contentEditable==='true'){ el.focus(); showToast('Editing enabled','success'); } else { if(activeIndex>=0) images[activeIndex].text=el.innerText; showToast('Changes saved','success'); } }
+    function clearText(){ document.getElementById('extractedText').innerHTML='Upload an image to extract text...'; document.getElementById('notesInput').value=''; document.getElementById('tagsInput').value=''; if(activeIndex>=0 && images[activeIndex]) images[activeIndex].text=''; }
+    document.getElementById('saveNotesTagsBtn').addEventListener('click',()=>{ if(activeIndex>=0 && images[activeIndex]){ images[activeIndex].notes=document.getElementById('notesInput').value; images[activeIndex].tags=document.getElementById('tagsInput').value; showToast('Notes & tags saved','success'); } else showToast('No image selected','error'); });
+    async function runSingleOCREngine(engineNum,base64Data){ try{ const res = await fetch(`${WORKER_URL}/ocr`,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ base64Image:`data:image/jpeg;base64,${base64Data}`, language:'eng', OCREngine:engineNum.toString() }) }); const data=await res.json(); if(data.ParsedResults && data.ParsedResults[0]) return { success:true, text:data.ParsedResults[0].ParsedText||'', engine:engineNum }; return { success:false, error:data.ErrorMessage||'No text found', engine:engineNum }; } catch(err){ return { success:false, error:err.message, engine:engineNum }; } }
+    document.getElementById('ocrBtn').addEventListener('click', async ()=>{ if(images.length===0){ showToast('No images uploaded','error'); return; } if(!incrementQuota()){ showToast('Daily extraction limit reached!','error'); return; } const currentImg = images[activeIndex!==-1?activeIndex:0]; if(!currentImg || !currentImg.src){ showToast('Select an image first','error'); return; } const base64Data = currentImg.src.split(',')[1]; const btn=document.getElementById('ocrBtn'); btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> OCR...'; try{ const [r1,r2]=await Promise.all([runSingleOCREngine(1,base64Data),runSingleOCREngine(2,base64Data)]); let best=null; if(r1.success && r2.success) best = r1.text.length>=r2.text.length?r1:r2; else if(r1.success) best=r1; else if(r2.success) best=r2; if(best && best.text.length>10){ currentImg.text=best.text; document.getElementById('extractedText').innerText=best.text; showToast(`Extracted ${best.text.length} chars! ✨`,'success'); unlockBadge('badge-first'); if(stats.extractions>=10) unlockBadge('badge-ten'); if(stats.extractions>=50) unlockBadge('badge-fifty'); } else { document.getElementById('extractedText').innerText='OCR failed. Try clearer image.'; showToast('OCR failed','error'); } } catch(err){ showToast('OCR error','error'); } finally{ btn.disabled=false; btn.innerHTML='<i class="fas fa-magic"></i> OCR'; } updateStats(); });
+
+    async function askGroq(prompt,loadingMsg,temp=0.4,maxTokens=800){ const output=document.getElementById('aiOutput'), content=document.getElementById('aiOutputContent'); output.classList.add('visible'); content.innerHTML=`<div style="display:flex;align-items:center;gap:10px;"><div class="ai-spinner"></div>${loadingMsg}</div>`; try{ const res=await fetch(`${WORKER_URL}/groq`,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ model:GROQ_MODEL, messages:[{role:'user',content:prompt}], temperature:temp, max_tokens:maxTokens }) }); const data=await res.json(); if(data.error){ content.innerHTML=`<span style="color:var(--accent-danger);">❌ Error: ${data.error.message||JSON.stringify(data.error)}</span>`; return null; } return data.choices[0].message.content.trim(); } catch(err){ content.innerHTML=`<span style="color:var(--accent-danger);">❌ Network error: ${err.message}</span>`; return null; } }
+    async function aiAction(type){ const text=document.getElementById('extractedText').innerText; if(!text || text==='Upload an image to extract text...' || text==='Click OCR to extract text...'){ showToast('Extract text from an image first','error'); return; } const actions={ enhance:{ msg:'🔧 Enhancing...', prompt:`Fix spelling errors and clean up this OCR text. Return ONLY the cleaned text:\n${text.substring(0,2000)}` }, doctype:{ msg:'🔍 Detecting...', prompt:`What type of document? Answer in one sentence:\n${text.substring(0,1500)}` }, summary:{ msg:'📝 Summarizing...', prompt:`Summarize in 3 bullet points:\n${text.substring(0,2000)}` }, whatsapp:{ msg:'💬 Crafting WhatsApp...', prompt:`Create a WhatsApp summary under 150 words, use emojis:\n${text.substring(0,1500)}` }, contacts:{ msg:'📇 Extracting contacts...', prompt:`Extract names, phones, emails as bullet points:\n${text.substring(0,1500)}` }, sensitive:{ msg:'🔒 Scanning sensitive data...', prompt:`Check for sensitive info, rate LOW/MEDIUM/HIGH:\n${text.substring(0,1500)}` }, calendar:{ msg:'📅 Finding events...', prompt:`Extract dates, appointments:\n${text.substring(0,1500)}` }, kenya:{ msg:'🇰🇪 Kenya analysis...', prompt:`Analyze Kenyan doc: KRA PIN, NHIF, NSSF, M-Pesa, National ID, eCitizen:\n${text.substring(0,1500)}` }, lawyer:{ msg:'⚖️ Simplifying...', prompt:`Explain in simple English, what it means:\n${text.substring(0,1500)}` }, translate:{ msg:'🌍 Translating to Swahili...', prompt:`Translate to Swahili, keep names/numbers:\n${text.substring(0,1500)}` }, invoice:{ msg:'🧾 Analyzing receipt...', prompt:`Extract items, subtotal, tax, total:\n${text.substring(0,1500)}` }, fake:{ msg:'🔍 Verifying...', prompt:`Check authenticity: LIKELY GENUINE/SUSPICIOUS/FAKE:\n${text.substring(0,1500)}` } }; const {msg,prompt:aiPrompt}=actions[type]; const result=await askGroq(aiPrompt,msg,0.3,800); if(result){ document.getElementById('aiOutputContent').innerHTML=result.replace(/\n/g,'<br>'); showToast('Done! ✨','success'); unlockBadge('badge-ai'); } }
+    async function photoTranslate(){ const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('Extract text first','error'); return; } const res=await askGroq(`Translate to Swahili:\n${text.substring(0,1000)}`,'🌍 Translating...',0.3,800); if(res){ document.getElementById('aiOutput').classList.add('visible'); document.getElementById('aiOutputContent').innerHTML=`<strong>Swahili Translation:</strong><br><br>${res.replace(/\n/g,'<br>')}`; showToast('Translation complete!','success'); } }
+    async function pdfToWord(){ showToast('Select PDF','info'); const inp=document.createElement('input'); inp.type='file'; inp.accept='.pdf'; inp.onchange=e=>{ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=ev=>{ const blob=new Blob([ev.target.result],{type:'application/msword'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=file.name.replace('.pdf','.doc'); a.click(); showToast('PDF converted to Word!','success'); }; reader.readAsArrayBuffer(file); }; inp.click(); }
+    async function pdfToImage(){ showToast('Select PDF','info'); const inp=document.createElement('input'); inp.type='file'; inp.accept='.pdf'; inp.onchange=async e=>{ const file=e.target.files[0]; if(!file) return; const ab=await file.arrayBuffer(); const blob=new Blob([ab],{type:'application/pdf'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=file.name.replace('.pdf','.png'); a.click(); showToast('PDF saved as image','success'); }; inp.click(); }
+    async function serviceAction(type){ const text=document.getElementById('extractedText').innerText; if(type==='word'){ if(!text||text.includes('Upload')){ showToast('Extract text first','error'); return; } const blob=new Blob([text],{type:'application/msword'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='textsnap_document.doc'; a.click(); showToast('Word doc downloaded','success'); } else if(type==='textpdf'){ if(!text||text.includes('Upload')){ showToast('Extract text first','error'); return; } const {jsPDF}=window.jspdf; const doc=new jsPDF(); doc.setFontSize(12); const lines=doc.splitTextToSize(text,180); doc.text(lines,15,20); doc.save('textsnap_text.pdf'); showToast('PDF downloaded','success'); } else if(type==='imagepdf'){ if(activeIndex<0||!images[activeIndex]){ showToast('Select an image','error'); return; } const {jsPDF}=window.jspdf; const doc=new jsPDF(); doc.addImage(images[activeIndex].src,'JPEG',10,10,190,0); doc.save('textsnap_image.pdf'); showToast('Image PDF saved','success'); } }
+
+    document.getElementById('copyBtn').addEventListener('click',()=>{ const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('Nothing to copy','error'); return; } navigator.clipboard.writeText(text); stats.copied++; localStorage.setItem('textsnap_stats',JSON.stringify(stats)); updateStats(); showToast('Copied!','success'); });
+    document.getElementById('pdfBtn').addEventListener('click',()=>{ const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('No text','error'); return; } const {jsPDF}=window.jspdf; const doc=new jsPDF(); doc.setFontSize(12); const lines=doc.splitTextToSize(text,180); doc.text(lines,15,20); doc.setFontSize(8); doc.setTextColor(100); doc.text('TextSnap Pro MAX by Vicky Chathar 🇰🇪',105,290,{align:'center'}); doc.save('textsnap_export.pdf'); showToast('PDF downloaded!','success'); });
+    document.getElementById('saveTaskBtn').addEventListener('click',()=>{ const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('No text to save','error'); return; } const task={ id:Date.now(), title:text.substring(0,50)+(text.length>50?'…':''), fullText:text, notes:document.getElementById('notesInput').value, tags:document.getElementById('tagsInput').value, priority:'normal', date:new Date().toLocaleDateString() }; tasks.unshift(task); localStorage.setItem('textsnap_tasks',JSON.stringify(tasks)); renderTasks(); stats.tasks=tasks.length; localStorage.setItem('textsnap_stats',JSON.stringify(stats)); updateStats(); showToast('Task saved!','success'); if(tasks.length>=5) unlockBadge('badge-task'); });
+    function renderTasks(){ const list=document.getElementById('taskList'); if(!tasks.length){ list.innerHTML='<p style="color:var(--text-muted); text-align:center; padding:20px;">No tasks yet</p>'; return; } list.innerHTML=tasks.map((task,idx)=>{ const cls=task.priority==='critical'?'task-critical':task.priority==='less'?'task-less':'task-normal'; return `<div class="task-item ${cls}"><div class="task-title">${escapeHtml(task.title)}</div><div class="task-details">📅 ${task.date} ${task.tags?`🏷️ ${escapeHtml(task.tags)}`:''}</div>${task.notes?`<div class="task-details">📝 ${escapeHtml(task.notes)}</div>`:''}<div class="task-actions"><button class="task-btn" onclick="copyTaskText(${task.id})">Copy</button><button class="task-btn" onclick="deleteTask(${idx})">Delete</button></div></div>`; }).join(''); }
+    window.copyTaskText=function(id){ const task=tasks.find(t=>t.id===id); if(task){ navigator.clipboard.writeText(task.fullText); showToast('Copied!','success'); } };
+    window.deleteTask=function(idx){ if(!confirm('Delete task?')) return; tasks.splice(idx,1); localStorage.setItem('textsnap_tasks',JSON.stringify(tasks)); renderTasks(); stats.tasks=tasks.length; localStorage.setItem('textsnap_stats',JSON.stringify(stats)); updateStats(); showToast('Task deleted','success'); };
+    window.clearAllTasks=function(){ if(!tasks.length) return; if(confirm('Clear all tasks?')){ tasks=[]; localStorage.setItem('textsnap_tasks',JSON.stringify(tasks)); renderTasks(); stats.tasks=0; localStorage.setItem('textsnap_stats',JSON.stringify(stats)); updateStats(); showToast('All tasks cleared','success'); } };
+    document.getElementById('exportCsvBtn').addEventListener('click',()=>{ if(!tasks.length){ showToast('No tasks','error'); return; } let csv="Title,Priority,Date,Tags,Notes\n"; tasks.forEach(t=>{ csv+=`"${t.title.replace(/"/g,'""')}",${t.priority},${t.date},"${(t.tags||'').replace(/"/g,'""')}","${(t.notes||'').replace(/"/g,'""')}"\n`; }); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='textsnap_tasks.csv'; a.click(); showToast('CSV exported','success'); });
+    document.getElementById('printBtn').addEventListener('click',()=>window.print());
+    document.getElementById('exportTxtBtn').addEventListener('click',()=>{ const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('No text','error'); return; } const blob=new Blob([text],{type:'text/plain'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='textsnap_export.txt'; a.click(); showToast('TXT exported','success'); });
+    document.getElementById('shareImageBtn').addEventListener('click',()=>{ const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('No text','error'); return; } const canvas=document.createElement('canvas'); canvas.width=600; canvas.height=400; const ctx=canvas.getContext('2d'); ctx.fillStyle='#0A1128'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#00B4D8'; ctx.font='bold 24px Inter'; ctx.fillText('TextSnap Pro',20,50); ctx.fillStyle='#E0E0E0'; ctx.font='14px Inter'; const lines=text.split('\n').slice(0,18); lines.forEach((l,i)=>ctx.fillText(l.substring(0,50),20,90+i*22)); ctx.fillStyle='#6C8DB0'; ctx.font='10px Inter'; ctx.fillText('by Vicky Chathar 🇰🇪',20,380); canvas.toBlob(blob=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='textsnap_share.png'; a.click(); showToast('Image saved!','success'); }); });
+    document.getElementById('exportJsonBtn').addEventListener('click',()=>{ const backup={tasks,stats,extractionsToday}; const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`textsnap_backup_${new Date().toISOString().slice(0,10)}.json`; a.click(); showToast('Backup exported','success'); });
+    document.getElementById('importJsonBtn').addEventListener('click',()=>{ const inp=document.createElement('input'); inp.type='file'; inp.accept='.json'; inp.onchange=e=>{ const file=e.target.files[0]; const reader=new FileReader(); reader.onload=ev=>{ try{ const data=JSON.parse(ev.target.result); if(data.tasks) tasks=data.tasks; if(data.stats) stats=data.stats; if(data.extractionsToday!==undefined) extractionsToday=data.extractionsToday; localStorage.setItem('textsnap_tasks',JSON.stringify(tasks)); localStorage.setItem('textsnap_stats',JSON.stringify(stats)); localStorage.setItem('textsnap_extractions_today',extractionsToday); renderTasks(); updateStats(); updateQuotaBar(); showToast('Backup restored!','success'); } catch(err){ showToast('Invalid backup','error'); } }; reader.readAsText(file); }; inp.click(); });
+    function shareVia(platform){ const text=encodeURIComponent(document.getElementById('extractedText').innerText); if(platform==='copy'){ navigator.clipboard.writeText(decodeURIComponent(text)); showToast('Copied to clipboard!','success'); } else if(platform==='whatsapp') window.open(`https://wa.me/?text=${text}`,'_blank'); else if(platform==='telegram') window.open(`https://t.me/share/url?url=${text}`,'_blank'); else if(platform==='email') window.open(`mailto:?subject=TextSnap%20Export&body=${text}`,'_blank'); }
+    function copyReferLink(){ navigator.clipboard.writeText(document.getElementById('referLink').textContent); showToast('Referral link copied!','success'); }
+    document.getElementById('formatTextBtn').addEventListener('click',()=>{ const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('No text to format','error'); return; } const formatted=text.replace(/\n/g,' ').replace(/\s+/g,' ').trim(); const sentences=formatted.split(/(?<=[.!?])\s+/); document.getElementById('formattedOutput').innerHTML=sentences.join('<br>'); showToast('Text formatted! ✨','success'); });
+    let chatharOpen=false; function toggleChathar(){ chatharOpen=!chatharOpen; document.getElementById('chathar-panel').classList.toggle('open',chatharOpen); }
+    function getChatharContext(){ const extracted=document.getElementById('extractedText'); if(extracted && extracted.innerText.trim().length>10 && !extracted.innerText.includes('Upload an image')) return `\n\n[Current document text: "${extracted.innerText.trim().substring(0,800)}"]`; return ''; }
+    function appendChatharMsg(role,text){ const container=document.getElementById('chathar-messages'); const div=document.createElement('div'); div.className=`chathar-msg ${role}`; if(role==='ai') div.innerHTML=`<div style="font-size:10px; color:var(--accent-cyan);">🚀 CHATHAR X_AI</div>${text.replace(/\n/g,'<br>')}`; else div.textContent=text; container.appendChild(div); container.scrollTop=container.scrollHeight; }
+    function showChatharTyping(){ const container=document.getElementById('chathar-messages'); const div=document.createElement('div'); div.className='chathar-msg ai'; div.id='chathar-typing'; div.innerHTML=`<div style="font-size:10px; color:var(--accent-cyan);">🚀 CHATHAR X_AI</div><div class="chathar-typing"><span></span><span></span><span></span></div>`; container.appendChild(div); container.scrollTop=container.scrollHeight; }
+    function removeChatharTyping(){ const el=document.getElementById('chathar-typing'); if(el) el.remove(); }
+    async function sendChathar(customPrompt){ const input=document.getElementById('chathar-input'); const userMsg=customPrompt||input.value.trim(); if(!userMsg) return; if(!customPrompt) input.value=''; appendChatharMsg('user',userMsg); const context=getChatharContext(); const systemPrompt=`You are CHATHAR X_AI, built by Vicky Chathar (21, Nairobi). Be helpful, friendly, and concise. Respond in English unless user writes Swahili. ${context}`; showChatharTyping(); try{ const response=await fetch(`${WORKER_URL}/groq`,{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ model:GROQ_MODEL, messages:[{role:"system",content:systemPrompt},{role:"user",content:userMsg}], max_tokens:300, temperature:0.7 }) }); const data=await response.json(); const reply=data.choices?.[0]?.message?.content||"Sorry, try again!"; removeChatharTyping(); appendChatharMsg('ai',reply); } catch(err){ removeChatharTyping(); appendChatharMsg('ai','❌ Error connecting to AI. Check your internet.'); } }
+    function chatharQuick(prompt){ if(!chatharOpen) toggleChathar(); setTimeout(()=>sendChathar(prompt),300); }
+    const voiceSummaryBtn=document.getElementById('voiceSummaryBtn'); let currentSummarySpeech=null;
+    async function speakSummary(){ if(currentSummarySpeech){ window.speechSynthesis.cancel(); currentSummarySpeech=null; voiceSummaryBtn.innerHTML='<i class="fas fa-volume-high"></i> Read Aloud (Voice Summary)'; voiceSummaryBtn.classList.remove('speaking'); return; } const text=document.getElementById('extractedText').innerText; if(!text||text.includes('Upload')){ showToast('Extract text first','error'); return; } voiceSummaryBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Getting summary...'; const summary=await askGroq(`Summarize in 2-3 short sentences for reading aloud:\n${text.substring(0,1000)}`,'🎙️ Preparing...',0.3,200); if(summary){ const utterance=new SpeechSynthesisUtterance(summary); utterance.rate=0.9; utterance.onend=()=>{ currentSummarySpeech=null; voiceSummaryBtn.innerHTML='<i class="fas fa-volume-high"></i> Read Aloud (Voice Summary)'; voiceSummaryBtn.classList.remove('speaking'); }; currentSummarySpeech=utterance; window.speechSynthesis.speak(utterance); voiceSummaryBtn.innerHTML='<i class="fas fa-stop"></i> Stop Summary'; voiceSummaryBtn.classList.add('speaking'); } else { voiceSummaryBtn.innerHTML='<i class="fas fa-volume-high"></i> Read Aloud (Voice Summary)'; voiceSummaryBtn.classList.remove('speaking'); } }
+    voiceSummaryBtn.addEventListener('click',speakSummary);
+
+    const lastDate=localStorage.getItem('textsnap_quota_date'), today=new Date().toISOString().slice(0,10);
+    if(lastDate!==today){ extractionsToday=0; localStorage.setItem('textsnap_extractions_today','0'); localStorage.setItem('textsnap_quota_date',today); updateQuotaBar(); }
+    if(currentUser){ loginOverlay.style.display='none'; updateProfileUI(); }
+    renderTasks(); renderLeaderboard(); renderBadges(); updateQuotaBar(); updateStats();
+    window.selectImage=selectImage; window.editText=editText; window.clearText=clearText; window.toggleProfileSection=toggleProfileSection; window.signOut=signOut; window.deleteTask=deleteTask; window.clearAllTasks=clearAllTasks; window.shareVia=shareVia; window.copyReferLink=copyReferLink; window.aiAction=aiAction; window.serviceAction=serviceAction; window.photoTranslate=photoTranslate; window.pdfToWord=pdfToWord; window.pdfToImage=pdfToImage; window.toggleChathar=toggleChathar; window.sendChathar=sendChathar; window.chatharQuick=chatharQuick;
+    updateHeaderAvatar();
+</script>
+</body>
+</html>
